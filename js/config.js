@@ -18,14 +18,6 @@
     `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2c3e50"/><stop offset="1" stop-color="#4ca1af"/></linearGradient></defs><rect width="300" height="300" fill="url(#g)"/><text x="150" y="170" font-size="90" text-anchor="middle" fill="white" font-family="sans-serif">☾</text></svg>`)
 };
 
-/* --- Helper: bangun daftar foto bernomor urut.
- * Contoh: seq("assets/photos/NEW/", 0, 12) → NEW/0.jpg … NEW/12.jpg --- */
-const seq = (dir, from, to) => {
-  const out = [];
-  for (let i = from; i <= to; i++) out.push(dir + i + ".jpg");
-  return out;
-};
-
 const CONFIG = {
   /* Password layar kunci (contoh: tanggal+bulan lahir "1405").
    * Prompt di layar: "Masukkan tanggal dan bulan lahir kamu (contoh: 1405)" */
@@ -36,11 +28,41 @@ const CONFIG = {
   birthdayName: "Kamu", // ganti dengan nama panggilan
   heroPhoto: ART.hero,
 
-  /* Galeri 1 — foto NEW (terbaru), tanpa caption. */
-  bestShots: seq("assets/photos/NEW/", 0, 12),
+  /* Galeri 1 — foto NEW (terbaru), tanpa caption.
+   * Satu path per baris; tambah/hapus baris sesuai jumlah foto. */
+  bestShots: [
+    "assets/photos/NEW/0.jpg",
+    "assets/photos/NEW/1.jpg",
+    "assets/photos/NEW/2.jpg",
+    "assets/photos/NEW/3.jpg",
+    "assets/photos/NEW/4.jpg",
+    "assets/photos/NEW/5.jpg",
+    "assets/photos/NEW/6.jpg",
+    "assets/photos/NEW/7.jpg",
+    "assets/photos/NEW/8.jpg",
+    "assets/photos/NEW/9.jpg",
+    "assets/photos/NEW/10.jpg",
+    "assets/photos/NEW/11.jpg",
+    "assets/photos/NEW/12.jpg"
+  ],
 
   /* Galeri 2 — foto OLD (lama) / throwback. */
-  throwback: seq("assets/photos/OLD/", 1, 14),
+  throwback: [
+    "assets/photos/OLD/1.jpg",
+    "assets/photos/OLD/2.jpg",
+    "assets/photos/OLD/3.jpg",
+    "assets/photos/OLD/4.jpg",
+    "assets/photos/OLD/5.jpg",
+    "assets/photos/OLD/6.jpg",
+    "assets/photos/OLD/7.jpg",
+    "assets/photos/OLD/8.jpg",
+    "assets/photos/OLD/9.jpg",
+    "assets/photos/OLD/10.jpg",
+    "assets/photos/OLD/11.jpg",
+    "assets/photos/OLD/12.jpg",
+    "assets/photos/OLD/13.jpg",
+    "assets/photos/OLD/14.jpg"
+  ],
 
   /* Surat kecil — gaya kartu lirik. Tulis sesukamu, boleh panjang. */
   letterText:
