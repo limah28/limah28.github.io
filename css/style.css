@@ -1,3 +1,7 @@
+/* Elemen dengan atribut hidden harus selalu tersembunyi,
+   walau ada aturan display lain (lightbox/player/mini). */
+[hidden] { display: none !important; }
+
 /* Spotify dark theme • mobile-first • max-width 430px */
 :root {
   --bg: #121212;
@@ -30,6 +34,12 @@ body {
   border-right: 1px solid #222;
   overflow-x: hidden;
 }
+.fatal {
+  margin: 12px 16px 0; padding: 12px 14px;
+  background: #3a1111; border: 1px solid #a33; border-radius: 10px;
+  color: #ffd7d7; font-size: .85rem; line-height: 1.5;
+}
+
 .eyebrow {
   font-size: .72rem; font-weight: 700;
   letter-spacing: .12em; text-transform: uppercase;

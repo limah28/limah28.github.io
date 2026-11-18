@@ -10,11 +10,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
+  <script>
+    /* Penangkap galat global: tampilkan pesan (bukan layar blank) bila script gagal. */
+    window.addEventListener("error", function (e) {
+      var f = document.getElementById("fatal");
+      if (f) { f.hidden = false; f.textContent = "Ups, ada galat: " + (e.message || "script") + " — coba refresh halaman."; }
+    });
+  </script>
 </head>
 <body>
   <div class="stage">
     <div class="phone" id="phone">
+      <div class="fatal" id="fatal" hidden></div>
+      <noscript><div class="fatal">Aktifkan JavaScript untuk membuka kejutan ini 🎁</div></noscript>
       <div class="topbar" id="topbar" hidden>
         <span class="topbar-back" aria-hidden="true">‹</span>
         <span class="topbar-title">Birthday Mix</span>
@@ -183,7 +192,7 @@
     </div>
   </div>
   <audio id="audio" preload="metadata"></audio>
-  <script src="js/config.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/config.js?v=3"></script>
+  <script src="js/app.js?v=3"></script>
 </body>
 </html>
