@@ -1,0 +1,2 @@
+Taruh file foto (.jpg/.png) di folder ini, lalu daftarkan path-nya di js/config.js.
+Contoh: "assets/photos/best1.jpg"

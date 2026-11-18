@@ -2,46 +2,171 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>limah28.github.io</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0d1117;
-      color: #e6edf3;
-      padding: 24px;
-    }
-    main {
-      max-width: 640px;
-      text-align: center;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      padding: 48px 32px;
-      background: #161b22;
-    }
-    h1 { font-size: 2rem; margin-bottom: 12px; }
-    p { color: #8b949e; line-height: 1.6; margin-bottom: 16px; }
-    code {
-      background: #0d1117;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      padding: 2px 8px;
-      font-size: 0.9em;
-    }
-    a { color: #58a6ff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Birthday Mix • Special Edition</title>
+  <meta name="description" content="A birthday surprise playlist experience." />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="theme-color" content="#121212" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <main>
-    <h1>Halo, ini limah28.github.io 👋</h1>
-    <p>Website statis ini di-host dengan <a href="https://pages.github.com/">GitHub Pages</a>.</p>
-    <p>Edit file <code>index.html</code> di repo ini untuk mengganti isi halaman.</p>
-  </main>
+  <div class="stage">
+    <div class="phone" id="phone">
+
+      <!-- ===== Lock screen ===== -->
+      <section class="lock" id="lock" aria-label="Layar kunci">
+        <div class="lock-card">
+          <div class="lock-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <p class="eyebrow">Special Birthday Edition</p>
+          <h1>Playlist ini dikunci 🔒</h1>
+          <p class="muted" id="lockPrompt">Masukkan tanggal dan bulan lahir kamu (contoh: 1405)</p>
+          <form id="lockForm" autocomplete="off">
+            <input id="lockInput" class="lock-input" type="password" inputmode="numeric" pattern="[0-9]*"
+              maxlength="8" placeholder="••••" aria-label="Kode pembuka" />
+            <button class="btn-green" type="submit">Buka</button>
+          </form>
+          <p class="lock-hint" id="lockHint" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+      <!-- ===== Main app ===== -->
+      <div class="app" id="app" hidden>
+        <header class="playlist-head" id="top">
+          <div class="playlist-gradient" aria-hidden="true"></div>
+          <img class="cover" id="heroCover" src="" alt="Cover playlist ulang tahun" />
+          <p class="eyebrow">Playlist • Birthday Mix</p>
+          <h2 id="bdayTitle">Happy Birthday!</h2>
+          <p class="muted">Birthday Mix • Made specially for you</p>
+          <div class="action-row">
+            <button class="play-all" id="playAll" aria-label="Putar semua">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="icon-btn like" id="likeBtn" aria-label="Suka" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            </button>
+            <button class="icon-btn" id="shareBtn" aria-label="Bagikan">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <main>
+          <section class="block" aria-label="Foto terbaik">
+            <h3>On Repeat (Best Shots)</h3>
+            <div class="rail" id="bestRow"></div>
+          </section>
+
+          <section class="block" aria-label="Foto lama">
+            <h3>Throwback Era</h3>
+            <div class="rail" id="throwRow"></div>
+          </section>
+
+          <section class="block" aria-label="Surat kecil">
+            <h3>Lyrics / Note</h3>
+            <article class="lyrics-card" id="lyricsCard">
+              <p class="lyrics-eyebrow">A little note, sung softly</p>
+              <p class="lyrics-text collapsed" id="letterText"></p>
+              <button class="link-btn" id="letterToggle">Baca Selengkapnya</button>
+            </article>
+          </section>
+
+          <section class="block" aria-label="Lagu rekomendasi">
+            <h3>Songs You Might Like</h3>
+            <ol class="tracks" id="trackList"></ol>
+          </section>
+
+          <section class="block" aria-label="Hadiah misteri">
+            <h3>Birthday Merch (Hadiah Misteri)</h3>
+            <article class="merch-card" id="merchCard">
+              <div class="gift" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-1.5-5-4.5-5S5 6 7 7s5 1 5 1zm0 0s1.5-5 4.5-5S19 6 17 7s-5 1-5 1z"/></svg>
+              </div>
+              <h4>Hadiah Misteri Ulang Tahun 🎁</h4>
+              <p class="muted">Ada satu kejutan kecil spesial buat kamu hari ini.</p>
+              <button class="btn-green pill" id="giftBtn">Buka Hadiah Misteri</button>
+              <div class="prank" id="prankBox" hidden>
+                <p id="prankText"></p>
+                <a class="btn-ghost" id="dmBtn" href="#" target="_blank" rel="noopener" hidden>Balas via DM aja deh 💬</a>
+              </div>
+            </article>
+          </section>
+
+          <footer class="foot">
+            <p>Made with ♥ • Birthday Mix</p>
+          </footer>
+          <div class="player-spacer" aria-hidden="true"></div>
+        </main>
+
+        <!-- Mini player -->
+        <div class="mini" id="mini" hidden>
+          <img id="miniCover" src="" alt="" />
+          <div class="mini-meta" id="miniOpen">
+            <p id="miniTitle">—</p>
+            <span id="miniArtist">—</span>
+          </div>
+          <button class="icon-btn" id="miniToggle" aria-label="Putar atau jeda">
+            <svg id="miniIconPlay" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="miniIconPause" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+          </button>
+          <div class="mini-progress"><span id="miniBar"></span></div>
+        </div>
+
+        <!-- Full player -->
+        <div class="player" id="player" hidden role="dialog" aria-label="Sedang diputar">
+          <button class="icon-btn player-close" id="playerClose" aria-label="Tutup pemutar">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <img class="player-cover" id="playerCover" src="" alt="Cover lagu" />
+          <div class="player-meta">
+            <h4 id="playerTitle">—</h4>
+            <p class="muted" id="playerArtist">—</p>
+          </div>
+          <div class="seek">
+            <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Posisi lagu" />
+            <div class="times"><span id="tCur">0:00</span><span id="tDur">0:00</span></div>
+          </div>
+          <div class="controls">
+            <button class="icon-btn" id="prevBtn" aria-label="Sebelumnya">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M6 6h2v12H6zM20 6v12L9 12z"/></svg>
+            </button>
+            <button class="play-all big" id="playerToggle" aria-label="Putar atau jeda">
+              <svg id="pIconPlay" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg id="pIconPause" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            </button>
+            <button class="icon-btn" id="nextBtn" aria-label="Berikutnya">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M16 6h2v12h-2zM4 6v12l11-6z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lightbox -->
+        <div class="lightbox" id="lightbox" hidden role="dialog" aria-label="Pratinjau foto">
+          <button class="icon-btn lb-close" id="lbClose" aria-label="Tutup">✕</button>
+          <button class="icon-btn lb-nav" id="lbPrev" aria-label="Foto sebelumnya">‹</button>
+          <img id="lbImg" src="" alt="Foto pratinjau" />
+          <button class="icon-btn lb-nav" id="lbNext" aria-label="Foto berikutnya">›</button>
+        </div>
+
+        <!-- YouTube modal -->
+        <div class="lightbox" id="ytModal" hidden role="dialog" aria-label="Video YouTube">
+          <button class="icon-btn lb-close" id="ytClose" aria-label="Tutup">✕</button>
+          <div class="yt-box"><iframe id="ytFrame" src="" title="YouTube" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe></div>
+        </div>
+
+      </div><!-- /app -->
+    </div>
+  </div>
+  <audio id="audio" preload="metadata"></audio>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

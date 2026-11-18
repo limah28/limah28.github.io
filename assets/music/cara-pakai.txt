@@ -1,0 +1,2 @@
+Taruh file .mp3 di folder ini, lalu isi kolom src di js/config.js.
+Contoh: "assets/music/lagu1.mp3"
