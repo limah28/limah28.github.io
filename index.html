@@ -15,6 +15,11 @@
 <body>
   <div class="stage">
     <div class="phone" id="phone">
+      <div class="topbar" id="topbar" hidden>
+        <span class="topbar-back" aria-hidden="true">‹</span>
+        <span class="topbar-title">Birthday Mix</span>
+        <span class="topbar-dot" aria-hidden="true"></span>
+      </div>
 
       <!-- ===== Lock screen ===== -->
       <section class="lock" id="lock" aria-label="Layar kunci">
@@ -79,7 +84,18 @@
 
           <section class="block" aria-label="Lagu rekomendasi">
             <h3>Songs You Might Like</h3>
+            <p class="preview-hint">Preview 30 detik • ketuk ikon Spotify untuk dengar full</p>
             <ol class="tracks" id="trackList"></ol>
+          </section>
+
+          <section class="block" aria-label="Tentang artis">
+            <h3>About the artist</h3>
+            <article class="artist-card">
+              <img id="artistPhoto" src="" alt="Foto artis" loading="lazy" />
+              <h4 id="artistName"></h4>
+              <p class="muted" id="artistBlurb"></p>
+              <a class="btn-ghost" id="artistLink" href="#" target="_blank" rel="noopener">Buka di Spotify</a>
+            </article>
           </section>
 
           <section class="block" aria-label="Hadiah misteri">
@@ -127,6 +143,7 @@
           <div class="player-meta">
             <h4 id="playerTitle">—</h4>
             <p class="muted" id="playerArtist">—</p>
+            <p class="preview-tag">Preview 30 dtk</p>
           </div>
           <div class="seek">
             <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Posisi lagu" />

@@ -45,16 +45,26 @@ Gak kerasa ya kita baru kenal sekitar semingguan, tapi vibes-nya udah seru bange
 Jangan lupa traktir permen atau es teh minimal satu gelas wkwk. Have a blast today! 🎂`,
 
   /* Daftar lagu.
-   * - src: path mp3 lokal, contoh "assets/music/lagu1.mp3". Kosongkan ("") untuk mode demo.
-   * - duration: "m:ss" — dipakai sebagai durasi mode demo & label waktu.
-   * - youtube: opsional, contoh "https://www.youtube.com/watch?v=xxxxx".
-   *   Kalau diisi, muncul ikon ▶ yang membuka video. */
+   * - src: URL audio preview 30 detik, path mp3 lokal ("assets/music/lagu1.mp3"),
+   *   atau "" untuk mode demo (timer tanpa suara).
+   * - duration: "m:ss" — label durasi ala Spotify.
+   * - spotify: link Spotify (search/detail). Muncul ikon Spotify hijau → buka full di aplikasi.
+   * - youtube: opsional "https://www.youtube.com/watch?v=xxxxx" → ikon ▶ buka video. */
   songs: [
-    { title: "Best Day of My Life", artist: "American Authors", cover: ART.a, src: "", duration: "3:14", youtube: "" },
-    { title: "Count on Me", artist: "Bruno Mars", cover: ART.b, src: "", duration: "3:17", youtube: "" },
-    { title: "Spring Day", artist: "BTS", cover: ART.c, src: "", duration: "4:34", youtube: "" },
-    { title: "Happy", artist: "Pharrell Williams", cover: ART.d, src: "", duration: "3:53", youtube: "" }
+    { title: "Sial", artist: "Mahalini", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/ee/3c/96/ee3c9611-4be3-c95d-831a-1b85048c545f/cover.jpg/600x600bb.jpg", src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/91/80/9d/91809d97-35d2-8531-cf14-fad1b9350d83/mzaf_13487711256406210167.plus.aac.p.m4a", duration: "4:03", spotify: "https://open.spotify.com/search/Mahalini%20Sial", youtube: "" },
+    { title: "Melawan Restu", artist: "Mahalini", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a7/9e/bd/a79ebd67-f79d-b5ea-c305-8463b06d206a/cover.jpg/600x600bb.jpg", src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/69/92/b7/6992b714-6257-6d4e-d458-04f18cd6e66d/mzaf_17987547225549782361.plus.aac.p.m4a", duration: "3:39", spotify: "https://open.spotify.com/search/Mahalini%20Melawan%20Restu", youtube: "" },
+    { title: "Kisah Sempurna", artist: "Mahalini", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/4d/ee/a6/4deea663-8868-a069-3583-4061e19ec993/cover.jpg/600x600bb.jpg", src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/1d/d0/d2/1dd0d2ca-51e6-3e77-c04c-575ecf6c9b48/mzaf_741311121871427890.plus.aac.p.m4a", duration: "4:36", spotify: "https://open.spotify.com/search/Mahalini%20Kisah%20Sempurna", youtube: "" },
+    { title: "Sisa Rasa", artist: "Mahalini", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/cb/a6/84/cba684fc-720b-485a-ebb0-96e9b79f6b5e/cover.jpg/600x600bb.jpg", src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/19/4a/dc/194adc61-e44c-c609-5e47-480e6e9fde44/mzaf_7249735545085540214.plus.aac.p.m4a", duration: "4:14", spotify: "https://open.spotify.com/search/Mahalini%20Sisa%20Rasa", youtube: "" },
+    { title: "Mati-Matian", artist: "Mahalini", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e6/91/eb/e691eb58-7ae3-cb1b-0a5f-839ad3a010e0/cover.jpg/600x600bb.jpg", src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/e8/10/29e8108c-a605-34e9-340e-eb15843978a4/mzaf_6232590663506982387.plus.aac.p.m4a", duration: "4:04", spotify: "https://open.spotify.com/search/Mahalini%20Mati-Matian", youtube: "" }
   ],
+
+  /* Kartu "About the artist" di bawah daftar lagu. */
+  artist: {
+    name: "Mahalini",
+    blurb: "Penyanyi pop Indonesia dengan vokal khas dan lagu-lagu galau yang nagih. Pas banget buat nemenin hari spesialmu hari ini.",
+    photo: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/cb/a6/84/cba684fc-720b-485a-ebb0-96e9b79f6b5e/cover.jpg/600x600bb.jpg",
+    url: "https://open.spotify.com/search/Mahalini"
+  },
 
   /* Hadiah misteri (prank). Tombol DM hanya muncul jika socialDmLink diisi. */
   giftPrankText: "Aku gak bisa kirim hadiahnya, karena gak punya no HP dan alamatmu wkwk 😂🎁",
