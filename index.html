@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Birthday Mix • Special Edition</title>
+  <title>Limah Birthday Playlist • Special Edition</title>
   <meta name="description" content="A birthday surprise playlist experience." />
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <meta name="theme-color" content="#121212" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="image" href="assets/photos/HOME/BG.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=3" />
+  <link rel="stylesheet" href="css/style.css?v=7" />
   <script>
     /* Penangkap galat global: tampilkan pesan (bukan layar blank) bila script gagal. */
     window.addEventListener("error", function (e) {
@@ -25,8 +26,8 @@
       <div class="fatal" id="fatal" hidden></div>
       <noscript><div class="fatal">Aktifkan JavaScript untuk membuka kejutan ini 🎁</div></noscript>
       <div class="topbar" id="topbar" hidden>
-        <span class="topbar-back" aria-hidden="true">‹</span>
-        <span class="topbar-title">Birthday Mix</span>
+        <button class="topbar-back" id="stageBack" aria-label="Kembali">‹</button>
+        <span class="topbar-title">Limah Birthday Playlist</span>
         <span class="topbar-dot" aria-hidden="true"></span>
       </div>
 
@@ -45,19 +46,91 @@
             <button class="btn-green" type="submit">Buka</button>
           </form>
           <p class="lock-hint" id="lockHint" role="status" aria-live="polite"></p>
+          <p class="build-tag">build <span id="buildTag">…</span></p>
+        </div>
+      </section>
+
+      <!-- ===== Gate sambutan (pengganti lock saat lockEnabled=false) ===== -->
+      <section class="gate" id="gate" hidden aria-label="Pintu masuk">
+        <div class="gate-card">
+          <h1><span class="star" aria-hidden="true">★</span> HBD LIMAH <span class="star" aria-hidden="true">★</span></h1>
+          <button class="gift-btn" id="gateBtn" aria-label="Buka kado">🎁</button>
+          <p class="muted gate-hint"><span class="up" aria-hidden="true">↑</span> ketuk ini <span class="up" aria-hidden="true">↑</span></p>
+          <p class="audio-hint" aria-label="Nyalakan audio">🔊 nyalakan suaranya ya~</p>
         </div>
       </section>
 
       <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+      <!-- ===== Intro sambutan (awal.html): ketik -> stage char ===== -->
+      <section class="intro" id="intro" hidden aria-label="Ucapan">
+        <div class="claps" id="claps" aria-hidden="true"></div>
+        <div class="intro-body">
+          <div class="intro-text" id="introText"></div>
+          <div class="intro-dots" id="introDots"></div>
+        </div>
+        <button class="intro-skip" id="introSkip">lewati ›</button>
+      </section>
+
+      <!-- ===== Panggung karakter (setelah kunci, sebelum menu) ===== -->
+      <section class="stage-home" id="stage" hidden aria-label="Karakter">
+        <!-- Loader ala Spotify: muncul hanya bila aset belum siap. -->
+        <div class="stage-loader" id="stageLoader" hidden aria-live="polite" aria-label="Tunggu ya">
+          <div class="sl-mark">
+            <span class="sl-ring" aria-hidden="true"></span>
+            <span class="sl-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <p class="sl-title">tunggu ya...</p>
+        </div>
+        <div class="pager" id="pager">
+          <div class="panel side" id="panelLeft">
+            <div class="side-head">
+              <h3>Foto Lama</h3>
+              <div class="side-ctl">
+                <span class="mini-pill" id="countOld">01/14</span>
+                <button class="mini-pill btn" data-speed="old">1x</button>
+                <button class="icon-btn stream-toggle" data-stream="old" aria-label="Jeda atau putar aliran">⏸</button>
+              </div>
+            </div>
+            <div class="stream"><div class="timeline-spine"></div><div class="stream-track" id="trackOld"></div></div>
+            <button class="btn-ghost" data-goto="menu">Lihat semua foto lama</button>
+          </div>
+          <div class="panel center" id="panelCenter">
+            <div class="flipwrap" id="flipWrap">
+              <img class="char on" id="charIdle" src="" alt="Karakter" draggable="false" />
+              <img class="char" id="charThink" src="" alt="" draggable="false" />
+              <img class="char" id="charPoint" src="" alt="" draggable="false" />
+            </div>
+            <div class="toast" id="stageToast" hidden></div>
+            <div class="bubble" id="charBubble" hidden><span id="bubbleText"></span></div>
+            <div class="dir-arrows" id="dirArrows" hidden data-dir="">
+              <span class="da left top">‹</span><span class="da right top">›</span>
+              <span class="da left bottom">‹</span><span class="da right bottom">›</span>
+            </div>
+          </div>
+          <div class="panel side" id="panelRight">
+            <div class="side-head">
+              <h3>Foto Baru</h3>
+              <div class="side-ctl">
+                <span class="mini-pill" id="countNew">01/13</span>
+                <button class="mini-pill btn" data-speed="new">1x</button>
+                <button class="icon-btn stream-toggle" data-stream="new" aria-label="Jeda atau putar aliran">⏸</button>
+              </div>
+            </div>
+            <div class="stream"><div class="timeline-spine"></div><div class="stream-track" id="trackNew"></div></div>
+            <button class="btn-ghost" data-goto="menu">Lihat semua foto</button>
+          </div>
+        </div>
+      </section>
 
       <!-- ===== Main app ===== -->
       <div class="app" id="app" hidden>
         <header class="playlist-head" id="top">
           <div class="playlist-gradient" aria-hidden="true"></div>
           <img class="cover" id="heroCover" src="" alt="Cover playlist ulang tahun" />
-          <p class="eyebrow">Playlist • Birthday Mix</p>
-          <h2 id="bdayTitle">Happy Birthday!</h2>
-          <p class="muted">Birthday Mix • Made specially for you</p>
+          <p class="eyebrow">Playlist • Limah Birthday Playlist</p>
+          <h2 id="playlistTitle">Selamat Bertambah Umur Limah 🎉</h2>
+          <p class="muted" id="bdaySub">Happy Birthday Siti Choirotul Halimah</p>
           <div class="action-row">
             <button class="play-all" id="playAll" aria-label="Putar semua">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -73,17 +146,23 @@
 
         <main>
           <section class="block" aria-label="Foto terbaik">
-            <h3>On Repeat (Best Shots)</h3>
+            <h3 id="galeriNewTitle">GALERI BIDADARI BARU BARU INI :)</h3>
             <div class="rail" id="bestRow"></div>
           </section>
 
           <section class="block" aria-label="Foto lama">
-            <h3>Throwback Era</h3>
+            <h3 id="galeriOldTitle">Galeri Bidadari Waktu Masih Muda Banget :D</h3>
             <div class="rail" id="throwRow"></div>
           </section>
 
+          <section class="block" id="songsCard" aria-label="Lagu rekomendasi">
+            <h3>Songs You Might Like</h3>
+            <p class="preview-hint">Preview 30 detik • ketuk ikon Spotify untuk dengar full</p>
+            <ol class="tracks" id="trackList"></ol>
+          </section>
+
           <section class="block" aria-label="Surat kecil">
-            <h3>Lyrics / Note</h3>
+            <h3>CATATAN AJA</h3>
             <article class="lyrics-card" id="lyricsCard">
               <p class="lyrics-eyebrow">A little note, sung softly</p>
               <p class="lyrics-text collapsed" id="letterText"></p>
@@ -91,24 +170,8 @@
             </article>
           </section>
 
-          <section class="block" aria-label="Lagu rekomendasi">
-            <h3>Songs You Might Like</h3>
-            <p class="preview-hint">Preview 30 detik • ketuk ikon Spotify untuk dengar full</p>
-            <ol class="tracks" id="trackList"></ol>
-          </section>
-
-          <section class="block" aria-label="Tentang artis">
-            <h3>About the artist</h3>
-            <article class="artist-card">
-              <img id="artistPhoto" src="" alt="Foto artis" loading="lazy" />
-              <h4 id="artistName"></h4>
-              <p class="muted" id="artistBlurb"></p>
-              <a class="btn-ghost" id="artistLink" href="#" target="_blank" rel="noopener">Buka di Spotify</a>
-            </article>
-          </section>
-
           <section class="block" aria-label="Hadiah misteri">
-            <h3>Birthday Merch (Hadiah Misteri)</h3>
+            <h3>Hadiah Misteri</h3>
             <article class="merch-card" id="merchCard">
               <div class="gift" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-1.5-5-4.5-5S5 6 7 7s5 1 5 1zm0 0s1.5-5 4.5-5S19 6 17 7s-5 1-5 1z"/></svg>
@@ -124,7 +187,7 @@
           </section>
 
           <footer class="foot">
-            <p>Made with ♥ • Birthday Mix</p>
+            <p>Made with ♥ • Limah Birthday Playlist</p>
           </footer>
           <div class="player-spacer" aria-hidden="true"></div>
         </main>
@@ -172,12 +235,20 @@
           </div>
         </div>
 
-        <!-- Lightbox -->
+        <!-- Lightbox galeri: panah kiri/kanan, geser, ketuk = versi _h -->
         <div class="lightbox" id="lightbox" hidden role="dialog" aria-label="Pratinjau foto">
           <button class="icon-btn lb-close" id="lbClose" aria-label="Tutup">✕</button>
-          <button class="icon-btn lb-nav" id="lbPrev" aria-label="Foto sebelumnya">‹</button>
-          <img id="lbImg" src="" alt="Foto pratinjau" />
-          <button class="icon-btn lb-nav" id="lbNext" aria-label="Foto berikutnya">›</button>
+          <button class="icon-btn lb-nav lb-prev" id="lbPrev" aria-label="Foto sebelumnya">‹</button>
+          <div class="lb-stage" id="lbStage">
+            <img id="lbImg" class="lb-photo" alt="Foto pratinjau" draggable="false" />
+            <img id="lbImgH" class="lb-photo lb-h" alt="" aria-hidden="true" draggable="false" />
+            <div class="lb-meta">
+              <span class="lb-count" id="lbCount">1 / 1</span>
+              <span class="lb-hint" id="lbHint">ketuk foto untuk lihat versi lain</span>
+            </div>
+          </div>
+          <button class="icon-btn lb-nav lb-next" id="lbNext" aria-label="Foto berikutnya">›</button>
+          <div class="lb-fx" id="lbFx" aria-hidden="true"></div>
         </div>
 
         <!-- YouTube modal -->
@@ -192,7 +263,7 @@
     </div>
   </div>
   <audio id="audio" preload="metadata"></audio>
-  <script src="js/config.js?v=3"></script>
-  <script src="js/app.js?v=3"></script>
+  <script src="js/config.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 </html>

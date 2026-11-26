@@ -1,5 +1,13 @@
 task1.md
-edit.py
+app_sync.py
+sync_photos.py
+assets/photos/NEW_SYNC/
+assets/photos/OLD_SYNC/
+awal.html
+reference_slider_photo.html
+assets/photos/Screenshot *.png
+assets/photos/langkah *.png
+assets/music/happy_musicbox.mp3
 .DS_Store
 Thumbs.db
 __pycache__/
