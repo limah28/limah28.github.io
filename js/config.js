@@ -181,7 +181,18 @@ Yang baru gajian, traktir es teh dong, apa udah abis gajinya wkwk
 
 Makasih ya Limah, hope you very very happy in your birthday, and this year gonna be your luckiest year ever.
 
-sori alay dan maaf kan semua salahku, aku berharap masih terus buat salah kedepannya dan tetap sering meledikin dirimu walau itu cringe :D `,
+Sori alay dan maaf kan semua salahku, aku berharap masih terus buat salah kedepannya dan tetap sering meledikin dirimu walau itu cringe :D 
+
+---
+...
+...
+...
+...
+...
+...
+---
+
+Aku punya niat yang baik, coba ku ungkapkan padamu. Kalau kamu berkenan bolehkah kita bertaaruf? ke arah yang serius, jika kamu tidak berkenan aku pun tak apa, Makasih udah membaca sampai sini. Makasih udah mau membalas dan menemui orang aneh ini. Semua doa terbaik untukmu 🙂`,
 
   /* Daftar lagu.
    * - src: URL audio preview 30 detik, path mp3 lokal ("assets/music/lagu1.mp3"),
