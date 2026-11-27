@@ -24,8 +24,8 @@ const CONFIG = {
   lockEnabled: false,
   /* Password layar kunci (contoh: tanggal+bulan lahir "1405").
    * Prompt di layar: "Masukkan tanggal dan bulan lahir kamu (contoh: 1405)" */
-  password: "1405",
-  hintWrong: "Ups, salah kode 😅 coba ingat-ingat tanggal lahirnya~",
+  password: "2811",
+  hintWrong: "Ups, salah kode 😅 tanggal lahir kamu bukan itu ~",
 
   /* Sapaan & cover utama */
   birthdayName: "Siti Choirotul Halimah", // ganti dengan nama panggilan
@@ -33,8 +33,39 @@ const CONFIG = {
 
   /* Judul yang tampil di halaman Playlist (bisa diubah lewat editor). */
   headline: "Selamat Bertambah Umur Limah 🎉",
-  galleryNewTitle: "GALERI BIDADARI BARU BARU INI :)",
-  galleryOldTitle: "Galeri Bidadari Waktu Masih Muda Banget :D",
+  galleryNewTitle: "Galeri Bidadari Baru Baru Ini 🙂",
+  galleryOldTitle: "Galeri Bidadari Waktu Masih Muda Banget 🥳",
+
+  /* Teks statis seluruh halaman (diubah lewat editor lokal edit.py).
+   * Meliputi: lock, gate, intro, panggung, playlist, surat, hadiah, footer. */
+  gateTitle: "HBD LIMAH",
+  gateHint: "ketuk ini",
+  audioHint: "🔊 nyalakan suaranya ya~",
+  lockEyebrow: "Special Birthday Edition",
+  lockTitle: "Playlist ini dikunci 🔒",
+  lockPrompt: "Masukkan tanggal dan bulan lahir kamu (contoh: 1405)",
+  lockButton: "Buka",
+  topbarTitle: "Limah Birthday Playlist",
+  playlistEyebrow: "Playlist • Limah Birthday Playlist",
+  bdayPrefix: "Happy Birthday ",
+  stageLoader: "tunggu ya...",
+  stageOldTitle: "Foto Lama",
+  stageNewTitle: "Foto Baru",
+  stageOldBtn: "Lihat semua foto lama",
+  stageNewBtn: "Lihat semua foto",
+  songsTitle: "Songs You Might Like",
+  songsHint: "Preview 30 detik",
+  letterTitle: "SURAT CILIK",
+  letterEyebrow: "A little letter...",
+  letterMore: "Baca Selengkapnya...",
+  letterLess: "Tutup",
+  giftTitle: "Hadiah Misteri",
+  giftCardTitle: "Hadiah Misteri Ulang Tahun 🎁",
+  giftDesc: "Ada satu kejutan kecil spesial buat kamu hari ini.",
+  giftBtn: "Buka Hadiah Misteri",
+  giftDm: "Balas via DM aja deh 💬",
+  footText: "Made with Heart • Limah 26 in 2026",
+  introSkip: "lewati ›",
 
   /* Panggung karakter setelah kunci: idle (dagu), think (berpikir), point (menunjuk).
    * Kiri/kanan otomatis di-flip. bg = latar panggung. */
@@ -126,11 +157,31 @@ const CONFIG = {
   ],
   /* Surat kecil — gaya kartu lirik. Tulis sesukamu, boleh panjang. */
   letterText:
-`Hai kamu yang lagi ulang tahun! 🎉
+`Assalamualaikum,
 
-Gak kerasa ya kita baru kenal sekitar semingguan, tapi vibes-nya udah seru banget. Semoga di umur yang baru ini hal-hal baik makin gampang nempel ke kamu: rezeki lancar, overthinking berkurang, dan playlist hidupmu isinya lagu-lagu enak semua.
+Hai, kamu yang lagi ulang tahun! 🎉
 
-Jangan lupa traktir permen atau es teh minimal satu gelas wkwk. Have a blast today! 🎂`,
+Sehat sehat nya yang banyak ya, bahagianya yang buanyak, beruntungnya juga banyak , aamiin.
+
+Kamu jaga kesehatannya, kurangin gula kalau bisa haha, agar organ kita gak terlalu capek hehe, tapi itu pulak yang sedap yakan wkwk.
+
+Sehat sehat juga untuk keluarga Limah ya, sabar menghadapi cobaan apapun yang ada, keberuntungan dan hal yang diimpikan segera terwujud, aamiin.
+
+---
+
+Makasih udah sampai sini dan mau meluangkan waktu melihat hal absurd ini hahaha.
+
+Makasih ya.. 
+Aku cuma mau makasih, dan aku berharap semangat yang kamu datangkan tetap ada di diriku, meski mungkin nanti aku tiada wkwk.
+
+Makasih ya udah mau luangkan waktu, hidup ini jadi ada warnanya, dan jadi bisa bermimpi hehe.
+
+
+Yang baru gajian, traktir es teh dong, apa udah abis gajinya wkwk
+
+Makasih ya Limah, hope you very very happy in your birthday, and this year gonna be your luckiest year ever.
+
+sori alay dan maaf kan semua salahku, aku berharap masih terus buat salah kedepannya dan tetap sering meledikin dirimu walau itu cringe :D `,
 
   /* Daftar lagu.
    * - src: URL audio preview 30 detik, path mp3 lokal ("assets/music/lagu1.mp3"),
@@ -160,6 +211,6 @@ Jangan lupa traktir permen atau es teh minimal satu gelas wkwk. Have a blast tod
   ],
 
   /* Hadiah misteri (prank). Tombol DM hanya muncul jika socialDmLink diisi. */
-  giftPrankText: "Aku gak bisa kirim hadiahnya, karena gak punya no HP dan alamatmu wkwk 😂🎁",
+  giftPrankText: "Sayangnya gak ada karena gak punya no HP dan alamat bidadari wkwk ",
   socialDmLink: "" // contoh: "https://ig.me/m/username" — kosongkan untuk sembunyikan tombol
 };

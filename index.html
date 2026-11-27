@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="image" href="assets/photos/HOME/BG.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=7" />
+  <link rel="stylesheet" href="css/style.css?v=10" />
   <script>
     /* Penangkap galat global: tampilkan pesan (bukan layar blank) bila script gagal. */
     window.addEventListener("error", function (e) {
@@ -27,23 +27,23 @@
       <noscript><div class="fatal">Aktifkan JavaScript untuk membuka kejutan ini 🎁</div></noscript>
       <div class="topbar" id="topbar" hidden>
         <button class="topbar-back" id="stageBack" aria-label="Kembali">‹</button>
-        <span class="topbar-title">Limah Birthday Playlist</span>
+        <span class="topbar-title" id="topbarTitle">Limah Birthday Playlist</span>
         <span class="topbar-dot" aria-hidden="true"></span>
       </div>
 
-      <!-- ===== Lock screen ===== -->
-      <section class="lock" id="lock" aria-label="Layar kunci">
+      <!-- ===== Lock screen (disembunyikan default; JS menampilkan hanya jika lockEnabled) ===== -->
+      <section class="lock" id="lock" hidden aria-label="Layar kunci">
         <div class="lock-card">
           <div class="lock-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           </div>
-          <p class="eyebrow">Special Birthday Edition</p>
-          <h1>Playlist ini dikunci 🔒</h1>
+          <p class="eyebrow" id="lockEyebrow">Special Birthday Edition</p>
+          <h1 id="lockTitle">Playlist ini dikunci 🔒</h1>
           <p class="muted" id="lockPrompt">Masukkan tanggal dan bulan lahir kamu (contoh: 1405)</p>
           <form id="lockForm" autocomplete="off">
             <input id="lockInput" class="lock-input" type="password" inputmode="numeric" pattern="[0-9]*"
               maxlength="8" placeholder="••••" aria-label="Kode pembuka" />
-            <button class="btn-green" type="submit">Buka</button>
+            <button class="btn-green" type="submit" id="lockButton">Buka</button>
           </form>
           <p class="lock-hint" id="lockHint" role="status" aria-live="polite"></p>
           <p class="build-tag">build <span id="buildTag">…</span></p>
@@ -53,10 +53,10 @@
       <!-- ===== Gate sambutan (pengganti lock saat lockEnabled=false) ===== -->
       <section class="gate" id="gate" hidden aria-label="Pintu masuk">
         <div class="gate-card">
-          <h1><span class="star" aria-hidden="true">★</span> HBD LIMAH <span class="star" aria-hidden="true">★</span></h1>
+          <h1><span class="star" aria-hidden="true">★</span> <span id="gateTitle">HBD LIMAH</span> <span class="star" aria-hidden="true">★</span></h1>
           <button class="gift-btn" id="gateBtn" aria-label="Buka kado">🎁</button>
-          <p class="muted gate-hint"><span class="up" aria-hidden="true">↑</span> ketuk ini <span class="up" aria-hidden="true">↑</span></p>
-          <p class="audio-hint" aria-label="Nyalakan audio">🔊 nyalakan suaranya ya~</p>
+          <p class="muted gate-hint"><span class="up" aria-hidden="true">↑</span> <span id="gateHintText">ketuk ini</span> <span class="up" aria-hidden="true">↑</span></p>
+          <p class="audio-hint" id="audioHint" aria-label="Nyalakan audio">🔊 nyalakan suaranya ya~</p>
         </div>
       </section>
 
@@ -80,12 +80,12 @@
             <span class="sl-ring" aria-hidden="true"></span>
             <span class="sl-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           </div>
-          <p class="sl-title">tunggu ya...</p>
+          <p class="sl-title" id="stageLoaderText">tunggu ya...</p>
         </div>
         <div class="pager" id="pager">
           <div class="panel side" id="panelLeft">
             <div class="side-head">
-              <h3>Foto Lama</h3>
+              <h3 id="stageOldTitle">Foto Lama</h3>
               <div class="side-ctl">
                 <span class="mini-pill" id="countOld">01/14</span>
                 <button class="mini-pill btn" data-speed="old">1x</button>
@@ -93,7 +93,7 @@
               </div>
             </div>
             <div class="stream"><div class="timeline-spine"></div><div class="stream-track" id="trackOld"></div></div>
-            <button class="btn-ghost" data-goto="menu">Lihat semua foto lama</button>
+            <button class="btn-ghost" data-goto="menu" id="stageOldBtn">Lihat semua foto lama</button>
           </div>
           <div class="panel center" id="panelCenter">
             <div class="flipwrap" id="flipWrap">
@@ -110,7 +110,7 @@
           </div>
           <div class="panel side" id="panelRight">
             <div class="side-head">
-              <h3>Foto Baru</h3>
+              <h3 id="stageNewTitle">Foto Baru</h3>
               <div class="side-ctl">
                 <span class="mini-pill" id="countNew">01/13</span>
                 <button class="mini-pill btn" data-speed="new">1x</button>
@@ -118,7 +118,7 @@
               </div>
             </div>
             <div class="stream"><div class="timeline-spine"></div><div class="stream-track" id="trackNew"></div></div>
-            <button class="btn-ghost" data-goto="menu">Lihat semua foto</button>
+            <button class="btn-ghost" data-goto="menu" id="stageNewBtn">Lihat semua foto</button>
           </div>
         </div>
       </section>
@@ -128,7 +128,7 @@
         <header class="playlist-head" id="top">
           <div class="playlist-gradient" aria-hidden="true"></div>
           <img class="cover" id="heroCover" src="" alt="Cover playlist ulang tahun" />
-          <p class="eyebrow">Playlist • Limah Birthday Playlist</p>
+          <p class="eyebrow" id="playlistEyebrow">Playlist • Limah Birthday Playlist</p>
           <h2 id="playlistTitle">Selamat Bertambah Umur Limah 🎉</h2>
           <p class="muted" id="bdaySub">Happy Birthday Siti Choirotul Halimah</p>
           <div class="action-row">
@@ -156,28 +156,28 @@
           </section>
 
           <section class="block" id="songsCard" aria-label="Lagu rekomendasi">
-            <h3>Songs You Might Like</h3>
-            <p class="preview-hint">Preview 30 detik • ketuk ikon Spotify untuk dengar full</p>
+            <h3 id="songsTitle">Songs You Might Like</h3>
+            <p class="preview-hint" id="songsHint">Preview 30 detik • ketuk ikon Spotify untuk dengar full</p>
             <ol class="tracks" id="trackList"></ol>
           </section>
 
           <section class="block" aria-label="Surat kecil">
-            <h3>CATATAN AJA</h3>
+            <h3 id="letterTitle">CATATAN AJA</h3>
             <article class="lyrics-card" id="lyricsCard">
-              <p class="lyrics-eyebrow">A little note, sung softly</p>
+              <p class="lyrics-eyebrow" id="letterEyebrow">A little note, sung softly</p>
               <p class="lyrics-text collapsed" id="letterText"></p>
               <button class="link-btn" id="letterToggle">Baca Selengkapnya</button>
             </article>
           </section>
 
           <section class="block" aria-label="Hadiah misteri">
-            <h3>Hadiah Misteri</h3>
+            <h3 id="giftTitle">Hadiah Misteri</h3>
             <article class="merch-card" id="merchCard">
               <div class="gift" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-1.5-5-4.5-5S5 6 7 7s5 1 5 1zm0 0s1.5-5 4.5-5S19 6 17 7s-5 1-5 1z"/></svg>
               </div>
-              <h4>Hadiah Misteri Ulang Tahun 🎁</h4>
-              <p class="muted">Ada satu kejutan kecil spesial buat kamu hari ini.</p>
+              <h4 id="giftCardTitle">Hadiah Misteri Ulang Tahun 🎁</h4>
+              <p class="muted" id="giftDesc">Ada satu kejutan kecil spesial buat kamu hari ini.</p>
               <button class="btn-green pill" id="giftBtn">Buka Hadiah Misteri</button>
               <div class="prank" id="prankBox" hidden>
                 <p id="prankText"></p>
@@ -187,7 +187,7 @@
           </section>
 
           <footer class="foot">
-            <p>Made with ♥ • Limah Birthday Playlist</p>
+            <p id="footText">Made with ♥ • Limah Birthday Playlist</p>
           </footer>
           <div class="player-spacer" aria-hidden="true"></div>
         </main>
@@ -263,7 +263,7 @@
     </div>
   </div>
   <audio id="audio" preload="metadata"></audio>
-  <script src="js/config.js?v=7"></script>
-  <script src="js/app.js?v=7"></script>
+  <script src="js/config.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
 </body>
 </html>

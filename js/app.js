@@ -16,11 +16,37 @@ const ytEmbed = (url) => {
 };
 
 /* ---------- Render konten dari CONFIG ---------- */
-$("#lockPrompt").textContent = "Masukkan tanggal dan bulan lahir kamu (contoh: 1405)";
-$("#bdaySub").textContent = "Happy Birthday " + CONFIG.birthdayName;
+const T = (key, fb) => (CONFIG[key] !== undefined && CONFIG[key] !== "" ? CONFIG[key] : fb);
+const setText = (sel, val) => { const el = $(sel); if (el && val !== undefined) el.textContent = val; };
+setText("#lockEyebrow", T("lockEyebrow", "Special Birthday Edition"));
+setText("#lockTitle", T("lockTitle", "Playlist ini dikunci 🔒"));
+setText("#lockPrompt", T("lockPrompt", "Masukkan tanggal dan bulan lahir kamu (contoh: 1405)"));
+setText("#lockButton", T("lockButton", "Buka"));
+setText("#gateTitle", T("gateTitle", "HBD LIMAH"));
+setText("#gateHintText", T("gateHint", "ketuk ini"));
+setText("#audioHint", T("audioHint", "🔊 nyalakan suaranya ya~"));
+setText("#topbarTitle", T("topbarTitle", "Limah Birthday Playlist"));
+setText("#playlistEyebrow", T("playlistEyebrow", "Playlist • Limah Birthday Playlist"));
+$("#bdaySub").textContent = T("bdayPrefix", "Happy Birthday ") + CONFIG.birthdayName;
 if (CONFIG.headline) $("#playlistTitle").textContent = CONFIG.headline;
 if (CONFIG.galleryNewTitle) $("#galeriNewTitle").textContent = CONFIG.galleryNewTitle;
 if (CONFIG.galleryOldTitle) $("#galeriOldTitle").textContent = CONFIG.galleryOldTitle;
+setText("#stageLoaderText", T("stageLoader", "tunggu ya..."));
+setText("#stageOldTitle", T("stageOldTitle", "Foto Lama"));
+setText("#stageNewTitle", T("stageNewTitle", "Foto Baru"));
+setText("#stageOldBtn", T("stageOldBtn", "Lihat semua foto lama"));
+setText("#stageNewBtn", T("stageNewBtn", "Lihat semua foto"));
+setText("#songsTitle", T("songsTitle", "Songs You Might Like"));
+setText("#songsHint", T("songsHint", "Preview 30 detik • ketuk ikon Spotify untuk dengar full"));
+setText("#letterTitle", T("letterTitle", "CATATAN AJA"));
+setText("#letterEyebrow", T("letterEyebrow", "A little note, sung softly"));
+setText("#giftTitle", T("giftTitle", "Hadiah Misteri"));
+setText("#giftCardTitle", T("giftCardTitle", "Hadiah Misteri Ulang Tahun 🎁"));
+setText("#giftDesc", T("giftDesc", "Ada satu kejutan kecil spesial buat kamu hari ini."));
+setText("#giftBtn", T("giftBtn", "Buka Hadiah Misteri"));
+setText("#dmBtn", T("giftDm", "Balas via DM aja deh 💬"));
+setText("#footText", T("footText", "Made with ♥ • Limah Birthday Playlist"));
+setText("#introSkip", T("introSkip", "lewati ›"));
 $("#heroCover").src = CONFIG.heroPhoto;
 $("#letterText").textContent = CONFIG.letterText;
 $("#prankText").textContent = CONFIG.giftPrankText;
@@ -288,19 +314,19 @@ if (typeof window !== "undefined") window.__lightbox = () => ({ i: lbIdx, n: lbL
 const letterText = $("#letterText"), letterToggle = $("#letterToggle");
 letterToggle.onclick = () => {
   const open = letterText.classList.toggle("collapsed");
-  letterToggle.textContent = open ? "Baca Selengkapnya" : "Tutup";
+  letterToggle.textContent = open ? T("letterMore", "Baca Selengkapnya") : T("letterLess", "Tutup");
 };
 letterText.classList.add("collapsed");
 
-/* ---------- Lock screen ---------- */
+/* ---------- Lock screen / Gate (anti-kedip: keduanya hidden di HTML) ---------- */
 const lock = $("#lock"), app = $("#app");
 try { $("#buildTag").textContent = (document.lastModified || "").slice(0, 16); } catch (_) {}
 if (CONFIG.lockEnabled === false) {
   // Kunci dinonaktifkan via config: tampilkan overlay kado sebagai gestur pembuka.
   // Klik kado = gestur user -> audio boleh play, lalu sambutan jalan. Fitur lock tetap ada.
+  // Lock tetap hidden (tidak kedip sama sekali).
   setTimeout(() => {
     const gate = $("#gate");
-    lock.style.display = "none";
     if (gate) {
       gate.hidden = false;
       const btn = $("#gateBtn");
@@ -316,6 +342,8 @@ if (CONFIG.lockEnabled === false) {
     }
   }, 0);
 } else {
+// Kunci aktif (bisa diaktifkan lagi dari editor): tampilkan lock, sembunyikan gate.
+lock.hidden = false;
 $("#lockForm").addEventListener("submit", (e) => {
   e.preventDefault();
   const val = $("#lockInput").value.trim();
@@ -608,8 +636,11 @@ function enterStage() {
     showStageLoader();
     waitStageAssets().then(() => {
       if (stage.hidden) return;
-      hideStageLoader();
-      schedulePageToast();
+      settlePaint().then(() => {
+        if (stage.hidden) return;
+        hideStageLoader();
+        schedulePageToast();
+      });
     });
   } else {
     schedulePageToast();
@@ -731,6 +762,15 @@ function hideStageLoaderNow() {
   stageLoaderEl.hidden = true;
   stageLoaderEl.classList.remove("out");
 }
+/* Tunggu 2 frame render agar BG/pose benar-benar sudah ter-paint di GPU
+ * sebelum loader mulai fade — mencegah background terlihat setengah jadi. */
+function settlePaint() {
+  return new Promise((res) => {
+    try {
+      requestAnimationFrame(() => requestAnimationFrame(res));
+    } catch (_) { setTimeout(res, 50); }
+  });
+}
 startStagePreload();
 
 let sIdx = 0; // -1 panel kiri, 0 karakter, 1 panel kanan
@@ -816,8 +856,11 @@ function backToStage() {
     showStageLoader();
     waitStageAssets().then(() => {
       if (stage.hidden) return;
-      hideStageLoader();
-      schedulePageToast();
+      settlePaint().then(() => {
+        if (stage.hidden) return;
+        hideStageLoader();
+        schedulePageToast();
+      });
     });
   }
   st.transition = "none"; st.transform = "translateY(40px)"; st.opacity = "0";
