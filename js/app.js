@@ -318,6 +318,242 @@ letterToggle.onclick = () => {
 };
 letterText.classList.add("collapsed");
 
+/* ---------- Gate FX: judul 1-baris, font + varian acak tiap buka ----------
+ * Adaptasi ringan sample.html: WAAPI bawaan + 1 canvas kecil (DPR ≤1.5,
+ * partikel ≤38, rAF berhenti sendiri). Semua animasi loop dimatikan
+ * saat kado diklik agar tidak makan baterai. */
+const gateFx = { raf: null, timers: [], parts: [], variant: 1 };
+const GATE_FONTS = ["font-vibes", "font-playfair", "font-paris"];
+function gateCard() { return document.querySelector(".gate-card"); }
+function gateFxReset() {
+  try {
+    if (gateFx.raf) { cancelAnimationFrame(gateFx.raf); gateFx.raf = null; }
+  } catch (_) { gateFx.raf = null; }
+  gateFx.timers.forEach((t) => { try { clearTimeout(t); } catch (_) {} });
+  gateFx.timers = [];
+  gateFx.parts = [];
+  const card = gateCard();
+  if (card) {
+    try {
+      card.querySelectorAll(".gate-title, .gate-title *, #gateOrn, #gateSheen").forEach((el) => {
+        try { el.getAnimations().forEach((a) => a.cancel()); } catch (_) {}
+      });
+    } catch (_) {}
+    const sh = document.getElementById("gateSheen");
+    if (sh) sh.style.transform = "translateX(-180%) skewX(-25deg)";
+    const cv = document.getElementById("gateFx");
+    if (cv) {
+      try {
+        const cx = cv.getContext("2d");
+        cx.clearRect(0, 0, cv.width, cv.height);
+      } catch (_) {}
+    }
+    const orn = document.getElementById("gateOrn");
+    if (orn) { orn.style.transform = "scaleX(0)"; orn.style.opacity = "0"; }
+  }
+}
+function gateFxSize() {
+  const card = gateCard(), cv = document.getElementById("gateFx");
+  if (!card || !cv) return null;
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const w = card.clientWidth, h = card.clientHeight;
+  if (!w || !h) return null;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const cx = cv.getContext("2d");
+  cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { cv, cx, w, h };
+}
+function gateBuild(splitChars) {
+  const wrap = document.getElementById("gateTitleWrap");
+  const src = (document.getElementById("gateTitle") || {}).textContent || "HAPPY BIRTHDAY LIMAH";
+  if (!wrap) return { words: [], chars: [] };
+  wrap.innerHTML = "";
+  const words = [], chars = [], lens = [];
+  String(src).split(/\s+/).filter(Boolean).forEach((wd) => {
+    const ws = document.createElement("span");
+    ws.className = "gword";
+    let n = 0;
+    if (splitChars) {
+      for (const ch of wd) {
+        const cs = document.createElement("span");
+        cs.className = "gchar";
+        cs.textContent = ch;
+        ws.appendChild(cs);
+        chars.push(cs);
+        n++;
+      }
+    } else {
+      ws.textContent = wd;
+    }
+    wrap.appendChild(ws);
+    wrap.appendChild(document.createTextNode(" "));
+    words.push(ws);
+    lens.push(n);
+  });
+  return { words, chars, lens };
+}
+function gateLoop() {
+  const s = gateFxSize();
+  if (!s) { gateFx.raf = null; return; }
+  const { cx, w, h } = s;
+  cx.clearRect(0, 0, w, h);
+  for (let i = gateFx.parts.length - 1; i >= 0; i--) {
+    const p = gateFx.parts[i];
+    p.x += p.vx; p.y += p.vy;
+    if (p.mode === "burst") {
+      p.vy += 0.05; p.vx *= 0.98; p.alpha -= p.decay;
+      if (p.alpha <= 0) { gateFx.parts.splice(i, 1); continue; }
+    } else if (p.y < -5) {
+      p.y = h + 5; p.x = Math.random() * w;
+    }
+    cx.globalAlpha = Math.max(0, p.alpha);
+    cx.fillStyle = p.color;
+    cx.beginPath();
+    cx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    cx.fill();
+  }
+  cx.globalAlpha = 1;
+  gateFx.raf = gateFx.parts.length ? requestAnimationFrame(gateLoop) : null;
+}
+function gateKick() { if (!gateFx.raf) gateFx.raf = requestAnimationFrame(gateLoop); }
+function gateBurst(count) {
+  const s = gateFxSize();
+  if (!s) return;
+  const cols = ["#fff0f3", "#ffb3c6", "#ff8fab", "#f3c65f"];
+  for (let i = 0; i < (count || 36); i++) {
+    const a = (Math.PI * 2 * i) / (count || 36) + Math.random() * 0.35;
+    const sp = 1.4 + Math.random() * 4.0;
+    gateFx.parts.push({ x: s.w / 2, y: s.h / 2 - 15, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1, size: 1.5 + Math.random() * 2.4, alpha: 1, decay: 0.014 + Math.random() * 0.012, color: cols[i % cols.length], mode: "burst" });
+  }
+  gateKick();
+}
+function gatePetals(count) {
+  const s = gateFxSize();
+  if (!s) return;
+  const cols = ["#ffc2d4", "#ffb3c6", "#fff0f3", "#f3c65f"];
+  for (let i = 0; i < (count || 22); i++) {
+    gateFx.parts.push({ x: Math.random() * s.w, y: Math.random() * s.h, vx: (Math.random() - 0.5) * 0.45, vy: -0.25 - Math.random() * 0.45, size: 1.4 + Math.random() * 2.4, alpha: 0.25 + Math.random() * 0.55, color: cols[i % cols.length], mode: "ambient" });
+  }
+  gateKick();
+}
+function gateSpark(x, y) {
+  const cols = ["#fff5f8", "#ffc2d4", "#f3c65f"];
+  for (let i = 0; i < 2; i++) {
+    gateFx.parts.push({ x: x + (Math.random() - 0.5) * 8, y: y + (Math.random() - 0.5) * 14, vx: (Math.random() - 0.5) * 0.8, vy: 0.3 + Math.random() * 0.8, size: 1.2 + Math.random() * 2, alpha: 0.95, decay: 0.025, color: cols[(Math.random() * cols.length) | 0], mode: "burst" });
+  }
+  gateKick();
+}
+function gateSheen(delay) {
+  const sh = document.getElementById("gateSheen");
+  if (!sh) return;
+  sh.animate([{ transform: "translateX(-180%) skewX(-25deg)" }, { transform: "translateX(350%) skewX(-25deg)" }],
+    { duration: 1400, delay: delay == null ? 600 : delay, easing: "cubic-bezier(0.25, 1, 0.5, 1)" });
+}
+function gateOrn(delay) {  const orn = document.getElementById("gateOrn");
+  if (!orn) return;
+  orn.animate([{ transform: "scaleX(0)", opacity: 0 }, { transform: "scaleX(1)", opacity: 1 }],
+    { duration: 900, delay: delay || 500, fill: "forwards", easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+}
+function gatePlay(n) {
+  gateFx.variant = n;
+  gateFxReset();
+  const wrap = document.getElementById("gateTitleWrap");
+  if (!wrap) return;
+  const { words, chars, lens } = gateBuild(n === 2);
+  const later = (fn, ms) => { gateFx.timers.push(setTimeout(fn, ms)); };
+  if (n === 1) { // Velvet Reveal
+    words.forEach((w, i) => {
+      w.classList.add("gate-rosegold");
+      w.style.opacity = "0";
+      w.animate([{ opacity: 0, clipPath: "inset(0 100% 0 0)", transform: "translateY(10px) scale(0.95)" }, { opacity: 1, clipPath: "inset(0 0% 0 0)", transform: "translateY(0px) scale(1)" }],
+        { duration: 1000, delay: i * 300, fill: "forwards", easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+    });
+    gateOrn(500);
+    gateSheen(900);
+  } else if (n === 2) { // 3D Silk Ribbon — kata pertama putih, sisanya pink (seperti sample)
+    const firstLen = (lens && lens[0]) || 0;
+    chars.forEach((c, i) => {
+      c.style.color = i < firstLen ? "#fff0f5" : "#ffb3c6";
+      c.style.opacity = "0";
+      const enter = c.animate([{ opacity: 0, transform: "translate3d(0, 20px, 60px) rotateY(55deg) scale(0.85)" }, { opacity: 1, transform: "translate3d(0, 0, 0) rotateY(0deg) scale(1)" }],
+        { duration: 800, delay: i * 55, fill: "forwards", easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+      enter.onfinish = () => {
+        c.animate([{ transform: "translateY(0px)" }, { transform: "translateY(-4px)" }, { transform: "translateY(0px)" }],
+          { duration: 2600, delay: i * 80, iterations: Infinity, easing: "ease-in-out" });
+      };
+    });
+  } else if (n === 3) { // Rose Gold Gala
+    if (words[0]) {
+      words[0].classList.add("gate-pearl");
+      words[0].style.opacity = "0";
+      words[0].animate([{ opacity: 0, transform: "scale(1.4) translateY(-8px)" }, { opacity: 1, transform: "scale(1) translateY(0px)" }],
+        { duration: 600, fill: "forwards", easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+    }
+    later(() => { gateBurst(34); gateSheen(150); }, 320);
+    if (words[1]) {
+      words[1].classList.add("gate-rosegold");
+      words[1].style.opacity = "0";
+      words[1].animate([{ opacity: 0, transform: "scale(0.7) translateY(14px)" }, { opacity: 1, transform: "scale(1) translateY(0px)" }],
+        { duration: 800, delay: 380, fill: "forwards", easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" });
+    }
+    words.slice(2).forEach((w, i) => {
+      w.classList.add("gate-rosegold");
+      w.style.opacity = "0";
+      w.animate([{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "translateY(0px)" }],
+        { duration: 700, delay: 550 + i * 150, fill: "forwards", easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+    });
+  } else if (n === 4) { // Magic Calligraphy
+    const card = gateCard();
+    words.forEach((w, wi) => {
+      w.classList.add("gate-rosegold");
+      w.style.clipPath = "inset(0 100% 0 0)";
+      const dur = 1000, delay = wi * 850;
+      w.animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)" }],
+        { duration: dur, delay, fill: "forwards", easing: "linear" });
+      later(() => {
+        if (!card) return;
+        const cr = card.getBoundingClientRect(), wr = w.getBoundingClientRect();
+        const x0 = wr.left - cr.left + 8, x1 = wr.right - cr.left - 8;
+        const cy = wr.top - cr.top + wr.height / 2;
+        const t0 = performance.now();
+        const track = (now) => {
+          if (gateFx.variant !== 4) return;
+          const pr = Math.min((now - t0) / dur, 1);
+          gateSpark(x0 + (x1 - x0) * pr, cy + Math.sin(pr * Math.PI * 4) * 8);
+          if (pr < 1) requestAnimationFrame(track);
+        };
+        requestAnimationFrame(track);
+      }, delay);
+    });
+    gateOrn(1700);
+  } else { // Floating Petals
+    gatePetals(22);
+    words.forEach((w, i) => {
+      w.classList.add("gate-rosegold");
+      w.style.opacity = "0";
+      const a = w.animate([{ opacity: 0, transform: "translateY(20px) scale(0.92)" }, { opacity: 1, transform: "translateY(0px) scale(1)" }],
+        { duration: 1100, delay: i * 220, fill: "forwards", easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+      a.onfinish = () => {
+        w.animate([{ transform: "translateY(0px) rotate(-0.8deg)" }, { transform: "translateY(-7px) rotate(0.8deg)" }, { transform: "translateY(0px) rotate(-0.8deg)" }],
+          { duration: 3400, delay: i * 350, iterations: Infinity, easing: "ease-in-out" });
+      };
+    });
+    gateSheen(1000);
+  }
+}
+function gateStart() {
+  const wrap = document.getElementById("gateTitleWrap");
+  if (!wrap) return;
+  wrap.classList.remove("font-vibes", "font-playfair", "font-paris");
+  wrap.classList.add(GATE_FONTS[(Math.random() * GATE_FONTS.length) | 0]);
+  const play = () => gatePlay(1 + ((Math.random() * 5) | 0));
+  try {
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(play);
+    else play();
+  } catch (_) { play(); }
+}
+function gateStop() { gateFxReset(); }
+
 /* ---------- Lock screen / Gate (anti-kedip: keduanya hidden di HTML) ---------- */
 const lock = $("#lock"), app = $("#app");
 try { $("#buildTag").textContent = (document.lastModified || "").slice(0, 16); } catch (_) {}
@@ -329,8 +565,10 @@ if (CONFIG.lockEnabled === false) {
     const gate = $("#gate");
     if (gate) {
       gate.hidden = false;
+      try { gateStart(); } catch (_) {}
       const btn = $("#gateBtn");
       const openGate = () => {
+        try { gateStop(); } catch (_) {}
         gate.style.display = "none";
         playIntro();
         try { confetti(); } catch (_) {}

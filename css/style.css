@@ -114,17 +114,27 @@ body {
   border: 1px solid #2c2c2c;
   border-radius: 16px; padding: 36px 24px;
 }
-.gate-card h1 { font-size: 1.35rem; margin: 8px 0 4px; }
-.gate-card .star {
-  display: inline-block;
-  color: var(--green);
-  animation: star-twinkle 1.4s ease-in-out infinite;
+.gate-card { position: relative; overflow: hidden; }
+#gateFx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.gate-sheen { position: absolute; top: 0; left: 0; width: 45%; height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(255, 228, 236, 0.11) 50%, transparent 100%); transform: translateX(-180%) skewX(-25deg); pointer-events: none; z-index: 1; }
+.gate-card > *:not(#gateFx):not(.gate-sheen) { position: relative; z-index: 2; }
+/* Judul 1 baris di atas kado — font & varian diacak tiap buka */
+.gate-title {
+  white-space: nowrap; user-select: none;
+  font-size: clamp(1.15rem, 6vw, 1.6rem);
+  line-height: 1.3; margin: 8px 0 4px;
+  perspective: 700px;
 }
-.gate-card h1 .star:last-child { animation-delay: .7s; }
-@keyframes star-twinkle {
-  0%, 100% { transform: scale(1) rotate(-8deg); opacity: 1; }
-  50% { transform: scale(1.35) rotate(8deg); opacity: .65; }
-}
+.gate-title .gword { display: inline-block; white-space: nowrap; padding: 8px 7px; line-height: 1.3; transform-style: preserve-3d; will-change: transform, opacity, clip-path; }
+.gate-title .gchar { display: inline-block; transform-style: preserve-3d; will-change: transform, opacity; }
+.gate-title.font-vibes { font-family: 'Great Vibes', cursive; font-weight: 400; }
+.gate-title.font-playfair { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 600; }
+.gate-title.font-paris { font-family: 'Parisienne', cursive; font-weight: 400; }
+.gate-rosegold { background: linear-gradient(180deg, #fff6f8 0%, #ffc2d4 45%, #e5989b 75%, #f3c65f 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.gate-pearl { background: linear-gradient(180deg, #ffffff 0%, #ffe5ec 60%, #ffb3c6 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.gate-orn { display: flex; align-items: center; justify-content: center; width: 70%; max-width: 220px; margin: 10px auto 0; opacity: 0; transform: scaleX(0); will-change: transform, opacity; }
+.gate-orn i { flex: 1; height: 1.5px; background: linear-gradient(90deg, transparent, #ffb3c6, transparent); }
+.gate-orn b { width: 7px; height: 7px; background: #ffd6e0; transform: rotate(45deg); margin: 0 10px; }
 .gate-card .muted { margin-top: 14px; }
 .gate-hint .up {
   display: inline-block;

@@ -38,7 +38,7 @@ const CONFIG = {
 
   /* Teks statis seluruh halaman (diubah lewat editor lokal edit.py).
    * Meliputi: lock, gate, intro, panggung, playlist, surat, hadiah, footer. */
-  gateTitle: "HBD LIMAH",
+  gateTitle: "Happy Birthday Limah",
   gateHint: "ketuk ini",
   audioHint: "🔊 nyalakan suaranya ya~",
   lockEyebrow: "Special Birthday Edition",
