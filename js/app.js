@@ -1664,6 +1664,22 @@ stage.addEventListener("pointercancel", (e) => endGest(e, true));
 /* Pengaman: pointerup di luar stage (jari lepas di tepi) tetap akhiri gestur. */
 document.addEventListener("pointerup", (e) => { if (gest && e.pointerId === gest.id) endGest(e, false); });
 
+/* ---------- Anti menu "Simpan Gambar" saat hold ----------
+ * iOS memakai -webkit-touch-callout (CSS); Android/desktop memakai
+ * contextmenu. Blokir hanya di area gestur dan semua <img>, supaya menu
+ * teks di playlist tetap normal. Tidak memanggil preventDefault pada
+ * pointerdown, jadi hold/geser/audio tidak terganggu. */
+document.addEventListener("contextmenu", (e) => {
+  const t = e.target;
+  if (!t) return;
+  if (t.tagName === "IMG" || (t.closest && (t.closest("#stage") || t.closest("#lightbox")))) {
+    e.preventDefault();
+  }
+});
+document.addEventListener("dragstart", (e) => {
+  if (e.target && e.target.tagName === "IMG") e.preventDefault();
+});
+
 /* ---------- Confetti ringan ---------- */
 function confetti() {
   const c = $("#confetti"), ctx = c.getContext("2d");

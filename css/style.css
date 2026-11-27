@@ -2,6 +2,15 @@
    walau ada aturan display lain (lightbox/player/mini). */
 [hidden] { display: none !important; }
 
+/* Cegah long-press "Simpan Gambar"/"Copy" di iOS & Android.
+   Gestur hold/geser tetap ditangani pointer events, bukan menu browser. */
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 /* Spotify dark theme • mobile-first • max-width 430px */
 :root {
   --bg: #121212;
@@ -362,6 +371,7 @@ body {
   overflow: hidden; z-index: 30;
   background: #0a0f0d;
   touch-action: none; user-select: none; -webkit-user-select: none;
+  -webkit-touch-callout: none; -webkit-user-drag: none;
 }
 /* ---------- Loader panggung ala Spotify ---------- */
 .stage-loader {
@@ -416,6 +426,8 @@ body {
   width: 112%; max-width: none; height: auto;
   filter: drop-shadow(0 18px 40px rgba(0, 0, 0, .6));
   pointer-events: none; opacity: 0;
+  user-select: none; -webkit-user-select: none;
+  -webkit-touch-callout: none; -webkit-user-drag: none;
   transition: opacity .28s ease;
   will-change: opacity;
 }
@@ -480,6 +492,7 @@ button.mini-pill:active { transform: scale(.95); }
 .stream {
   flex: 1; min-height: 0; overflow: hidden; position: relative;
   touch-action: none; /* gestur milik stream: tanpa campur tangan browser */
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
   -webkit-mask-image: linear-gradient(transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(transparent, #000 8%, #000 92%, transparent);
 }
@@ -614,6 +627,7 @@ button.mini-pill:active { transform: scale(.95); }
   background: radial-gradient(90% 60% at 50% 45%, rgba(32, 32, 32, .98), rgba(0, 0, 0, .97));
   z-index: 50; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
 }
 .lb-stage {
   position: relative; display: flex; align-items: center; justify-content: center;
